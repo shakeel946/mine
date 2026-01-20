@@ -10,6 +10,7 @@
         padding: 0;
         font-family: "Poppins", sans-serif;
         overflow: hidden;
+        background: #000;
     }
 
     #hearts {
@@ -37,7 +38,6 @@
         z-index: 2;
     }
 
-    /* Square-friendly center cropping */
     #screen1 { background-image: url('bg1.jpg'); }
     #screen2 { background-image: url('bg2.jpg'); }
     #screen3 { background-image: url('bg3.jpg'); }
@@ -67,20 +67,12 @@
         transition: 0.3s;
     }
 
-    .btn:hover {
-        background: #ff5fbf;
-    }
+    .btn:hover { background: #ff5fbf; }
 
-    .hidden {
-        display: none;
-    }
+    .hidden { display: none; }
 
-    .fade-in {
-        animation: fadeInScreen 0.6s ease forwards;
-    }
-    .fade-out {
-        animation: fadeOutScreen 0.6s ease forwards;
-    }
+    .fade-in { animation: fadeInScreen 0.6s ease forwards; }
+    .fade-out { animation: fadeOutScreen 0.6s ease forwards; }
 
     @keyframes fadeInScreen {
         from { opacity: 0; transform: scale(0.97); }
@@ -90,6 +82,16 @@
         from { opacity: 1; transform: scale(1); }
         to { opacity: 0; transform: scale(0.97); }
     }
+
+    .typing-cursor::after {
+        content: '|';
+        animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+        0%,100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
 </style>
 </head>
 <body>
@@ -98,22 +100,22 @@
 
 <div class="screen fade-in" id="screen1">
     <div class="container">
-        <h2>Hey Pondatiii ❤️❤️</h2>
-        <p>I made something for you.</p>
+        <h2 class="type typing-cursor">Hey Pondatiii ❤️❤️</h2>
+        <p class="type typing-cursor">I made something for you.</p>
         <button class="btn" onclick="next(1)">Next</button>
     </div>
 </div>
 
 <div class="screen hidden" id="screen2">
     <div class="container">
-        <p>I wanted to say something in a way you’ll remember…</p>
+        <p class="type typing-cursor">I wanted to say something in a way you’ll remember…</p>
         <button class="btn" onclick="next(2)">Next</button>
     </div>
 </div>
 
 <div class="screen hidden" id="screen3">
     <div class="container">
-        <p>
+        <p class="type typing-cursor">
             It still makes me smile how we ended up here… not a normal couple, not something vague either — just something real in our own way.<br><br>
             Idhu namaku matum dha puriyum… a tiny quiet world where things feel soft, calm, and somehow perfectly right, even without trying.<br><br>
             Our feelings don’t shout, don’t rush — they just stay there, steady and warm, like they know where this is going.<br><br>
@@ -125,7 +127,7 @@
 
 <div class="screen hidden" id="screen4">
     <div class="container">
-        <p>
+        <p class="type typing-cursor">
             I don’t know what normal couples look like…<br><br>
             but I know who I want my future to look like.
         </p>
@@ -135,28 +137,59 @@
 
 <div class="screen hidden" id="screen5">
     <div class="container">
-        <h3>One day… I hope it becomes real.</h3>
-        <p>Until then, I’m happy it’s you.</p>
-        <p>seri tax ahh maranthuratha 😅😘</p>
+        <h3 class="type typing-cursor">One day… I hope it becomes real.</h3>
+        <p class="type typing-cursor">Until then, I’m happy it’s you.</p>
+        <p class="type typing-cursor">seri tax ahh maranthuratha 😅😘</p>
     </div>
 </div>
 
 <script>
+function typeText(element, callback) {
+    const fullHTML = element.innerHTML;
+    element.innerHTML = "";
+    let i = 0;
+
+    function typeChar() {
+        if (fullHTML.slice(i, i+4) === "<br>") {
+            element.innerHTML += "<br>";
+            i += 4;
+        } else {
+            element.innerHTML += fullHTML.charAt(i);
+            i++;
+        }
+
+        if (i < fullHTML.length) {
+            setTimeout(typeChar, 20);
+        } else if (callback) callback();
+    }
+    typeChar();
+}
+
+function startTyping(screen) {
+    let els = screen.querySelectorAll('.type');
+    els.forEach((el, index) => {
+        setTimeout(() => { typeText(el); }, index * 300);
+    });
+}
+
 function next(step) {
     let current = document.getElementById('screen' + step);
-    let next = document.getElementById('screen' + (step + 1));
-
+    let nextScreen = document.getElementById('screen' + (step + 1));
     current.classList.remove('fade-in');
     current.classList.add('fade-out');
 
     setTimeout(() => {
         current.classList.add('hidden');
-        next.classList.remove('hidden');
-        next.classList.add('fade-in');
+        nextScreen.classList.remove('hidden');
+        nextScreen.classList.add('fade-in');
+        startTyping(nextScreen);
     }, 400);
 }
 
-/* Floating Heart Particles */
+window.onload = () => {
+    startTyping(document.getElementById('screen1'));
+};
+
 const canvas = document.getElementById('hearts');
 const ctx = canvas.getContext('2d');
 canvas.width = innerWidth;
