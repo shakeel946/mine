@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Unakudhan dii😍</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+        overflow: hidden;
+    }
+
+    .screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        animation: fadeIn 1.2s ease;
+    }
+
+    /* Square-friendly center cropping */
+    #screen1 { background-image: url('bg1.jpg'); }
+    #screen2 { background-image: url('bg2.jpg'); }
+    #screen3 { background-image: url('bg3.jpg'); }
+    #screen4 { background-image: url('bg4.jpg'); }
+    #screen5 { background-image: url('bg5.jpg'); }
+
+    .container {
+        max-width: 85%;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(6px);
+        padding: 25px;
+        border-radius: 18px;
+        color: #2a2a2a;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+        z-index: 2;
+    }
+
+    .btn {
+        margin-top: 20px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 15px;
+        background: #ff7ecb;
+        color: white;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn:hover {
+        background: #ff5fbf;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.97); }
+        to { opacity: 1; transform: scale(1); }
+    }
+</style>
+</head>
+<body>
+
+<div class="screen" id="screen1">
+    <div class="container">
+        <h2>Hey Pondatiii ❤️❤️</h2>
+        <p>I made something for you.</p>
+        <button class="btn" onclick="next(1)">Next</button>
+    </div>
+</div>
+
+<div class="screen hidden" id="screen2">
+    <div class="container">
+        <p>I wanted to say something in a way you’ll remember…</p>
+        <button class="btn" onclick="next(2)">Next</button>
+    </div>
+</div>
+
+<div class="screen hidden" id="screen3">
+    <div class="container">
+        <p>
+            It still makes me smile how we ended up here… not a normal couple, not something vague either — just something real in our own way.<br><br>
+            Idhu namaku matum dha puriyum… a tiny quiet world where things feel soft, calm, and somehow perfectly right, even without trying.<br><br>
+            Our feelings don’t shout, don’t rush — they just stay there, steady and warm, like they know where this is going.<br><br>
+            And honestly… I think we always knew we wanted the same future — we just didn’t need to say it for it to feel true.
+        </p>
+        <button class="btn" onclick="next(3)">Continue</button>
+    </div>
+</div>
+
+<div class="screen hidden" id="screen4">
+    <div class="container">
+        <p>
+            I don’t know what normal couples look like…<br><br>
+            but I know who I want my future to look like.
+        </p>
+        <button class="btn" onclick="next(4)">One more thing</button>
+    </div>
+</div>
+
+<div class="screen hidden" id="screen5">
+    <div class="container">
+        <h3>One day… I hope it becomes real.</h3>
+        <p>Until then, I’m happy it’s you.</p>
+        <p>seri tax ahh maranthuratha 😅😘</p>
+    </div>
+</div>
+
+<script>
+function next(step) {
+    document.getElementById('screen' + step).classList.add('hidden');
+    document.getElementById('screen' + (step + 1)).classList.remove('hidden');
+}
+</script>
+
+</body>
+</html>
