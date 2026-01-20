@@ -31,22 +31,20 @@
         height: 100vh;
         display: flex;
         justify-content: center;
-        align-items: flex-end;
-	padding-bottom: 10vh;
+        align-items: center;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         z-index: 2;
     }
 
-    /* Background images */
     #screen1 { background-image: url('bg1.jpg'); }
     #screen2 { background-image: url('bg2.jpg'); }
     #screen3 { background-image: url('bg3.jpg'); }
     #screen4 { background-image: url('bg4.jpg'); }
     #screen5 { background-image: url('bg5.jpg'); }
 
-    /* Dark overlay (Option 1) */
+    /* Dark overlay */
     .screen::before {
         content: "";
         position: absolute;
@@ -54,7 +52,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.45); /* darkness */
+        background: rgba(0,0,0,0.45);
         z-index: 1;
     }
 
@@ -159,6 +157,30 @@
         <h3 class="type typing-cursor">One day… I hope it becomes real.</h3>
         <p class="type typing-cursor">Until then, I’m happy it’s you.</p>
         <p class="type typing-cursor">seri tax ahh maranthuratha 😅😘</p>
+        <button class="btn" onclick="next(5)">Next</button>
+    </div>
+</div>
+
+<!-- SCREEN 6 — ASK -->
+<div class="screen hidden" id="screen6">
+    <div class="container">
+        <h3 class="type typing-cursor">So… you mine or what? 😚</h3>
+        <button class="btn" onclick="goYes()">Yes 💗</button>
+        <button class="btn" onclick="goNo()">Not sure 😅</button>
+    </div>
+</div>
+
+<!-- SCREEN 7 — YES -->
+<div class="screen hidden" id="screen7">
+    <div class="container">
+        <h3 class="type typing-cursor">I knew it hehe 😌💕</h3>
+    </div>
+</div>
+
+<!-- SCREEN 8 — NOT SURE -->
+<div class="screen hidden" id="screen8">
+    <div class="container">
+        <h3 class="type typing-cursor">Ada paavi 😭 okay take your time.</h3>
     </div>
 </div>
 
@@ -205,10 +227,22 @@ function next(step) {
     }, 400);
 }
 
+function goYes(){ switchTo(7); }
+function goNo(){ switchTo(8); }
+
+function switchTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    let screen = document.getElementById('screen' + id);
+    screen.classList.remove('hidden');
+    screen.classList.add('fade-in');
+    startTyping(screen);
+}
+
 window.onload = () => {
     startTyping(document.getElementById('screen1'));
 };
 
+/* Hearts Animation */
 const canvas = document.getElementById('hearts');
 const ctx = canvas.getContext('2d');
 canvas.width = innerWidth;
