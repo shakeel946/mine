@@ -12,6 +12,16 @@
         overflow: hidden;
     }
 
+    #hearts {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 0;
+    }
+
     .screen {
         position: absolute;
         top: 0;
@@ -24,7 +34,7 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        animation: fadeIn 1.2s ease;
+        z-index: 2;
     }
 
     /* Square-friendly center cropping */
@@ -43,7 +53,6 @@
         color: #2a2a2a;
         text-align: center;
         box-shadow: 0 10px 25px rgba(0,0,0,0.18);
-        z-index: 2;
     }
 
     .btn {
@@ -66,15 +75,28 @@
         display: none;
     }
 
-    @keyframes fadeIn {
+    .fade-in {
+        animation: fadeInScreen 0.6s ease forwards;
+    }
+    .fade-out {
+        animation: fadeOutScreen 0.6s ease forwards;
+    }
+
+    @keyframes fadeInScreen {
         from { opacity: 0; transform: scale(0.97); }
         to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes fadeOutScreen {
+        from { opacity: 1; transform: scale(1); }
+        to { opacity: 0; transform: scale(0.97); }
     }
 </style>
 </head>
 <body>
 
-<div class="screen" id="screen1">
+<canvas id="hearts"></canvas>
+
+<div class="screen fade-in" id="screen1">
     <div class="container">
         <h2>Hey Pondatiii ❤️❤️</h2>
         <p>I made something for you.</p>
@@ -121,9 +143,69 @@
 
 <script>
 function next(step) {
-    document.getElementById('screen' + step).classList.add('hidden');
-    document.getElementById('screen' + (step + 1)).classList.remove('hidden');
+    let current = document.getElementById('screen' + step);
+    let next = document.getElementById('screen' + (step + 1));
+
+    current.classList.remove('fade-in');
+    current.classList.add('fade-out');
+
+    setTimeout(() => {
+        current.classList.add('hidden');
+        next.classList.remove('hidden');
+        next.classList.add('fade-in');
+    }, 400);
 }
+
+/* Floating Heart Particles */
+const canvas = document.getElementById('hearts');
+const ctx = canvas.getContext('2d');
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+const hearts = [];
+const colors = ['#ff99c8','#ff6bcb','#ffc2e5','#fc5c9c','#ffb3de'];
+
+function random(min, max){ return Math.random() * (max - min) + min; }
+
+function spawnHeart(){
+    hearts.push({
+        x: random(0, canvas.width),
+        y: canvas.height + 20,
+        size: random(8, 16),
+        speed: random(0.5, 1.2),
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 1
+    });
+}
+
+function drawHeart(h) {
+    ctx.save();
+    ctx.translate(h.x, h.y);
+    ctx.rotate(Math.PI / 4);
+    ctx.fillStyle = h.color;
+    ctx.globalAlpha = h.alpha;
+    const size = h.size;
+    ctx.fillRect(-size/2, -size/2, size, size);
+    ctx.beginPath();
+    ctx.arc(-size/2, -size/2, size/2, 0, Math.PI*2);
+    ctx.arc(size/2, -size/2, size/2, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    hearts.forEach((h,i)=>{
+        h.y -= h.speed;
+        h.alpha -= 0.004;
+        drawHeart(h);
+        if(h.alpha <= 0) hearts.splice(i,1);
+    });
+    requestAnimationFrame(animate);
+}
+
+setInterval(spawnHeart, 250);
+animate();
 </script>
 
 </body>
