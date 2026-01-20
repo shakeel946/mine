@@ -38,21 +38,37 @@
         z-index: 2;
     }
 
+    /* Background images */
     #screen1 { background-image: url('bg1.jpg'); }
     #screen2 { background-image: url('bg2.jpg'); }
     #screen3 { background-image: url('bg3.jpg'); }
     #screen4 { background-image: url('bg4.jpg'); }
     #screen5 { background-image: url('bg5.jpg'); }
 
+    /* Dark overlay (Option 1) */
+    .screen::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.45); /* darkness */
+        z-index: 1;
+    }
+
     .container {
         max-width: 85%;
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(6px);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
         padding: 25px;
         border-radius: 18px;
-        color: #2a2a2a;
+        color: #ffffff;
         text-align: center;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        position: relative;
+        z-index: 2;
+        text-shadow: 0px 0px 12px rgba(0,0,0,0.9);
     }
 
     .btn {
@@ -65,6 +81,8 @@
         font-size: 15px;
         cursor: pointer;
         transition: 0.3s;
+        position: relative;
+        z-index: 2;
     }
 
     .btn:hover { background: #ff5fbf; }
